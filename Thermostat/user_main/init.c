@@ -143,7 +143,7 @@ void sys_delay_judge(void)
           MotorStatus(0);
        }
        
-       if((out_onoff_flag == 0x55) && (Judge_Time_In_MainLoop(out_onoff_wait_time,1)==YES))
+       if((out_onoff_flag == 0x55) && (Judge_Time_In_MainLoop(out_onoff_wait_time,100)==YES))  //-什么事情都不能做到极致,1mS太短了
        {
           out_onoff_flag = 0;
           UART1_transmit_control = 4;
@@ -292,7 +292,7 @@ void sys_delay_judge(void)
        
        if(temp_data_out_flag == 0)
        {
-          if(Judge_Time_In_MainLoop(temp_data_out_time,5000)==YES)
+          if(Judge_Time_In_MainLoop(temp_data_out_time,10000)==YES)
           {
             temp_data_out_time = cticks_5ms;
             UART1_transmit_control = 6;
