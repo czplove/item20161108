@@ -143,14 +143,15 @@ void sys_delay_judge(void)
           MotorStatus(0);
        }
        
-       if((out_onoff_flag == 0x55) && (Judge_Time_In_MainLoop(out_onoff_wait_time,100)==YES))  //-什么事情都不能做到极致,1mS太短了
+       if((out_onoff_flag != 0) && (Judge_Time_In_MainLoop(out_onoff_wait_time,100)==YES))  //-什么事情都不能做到极致,1mS太短了
        {
           out_onoff_flag = 0;
           UART1_transmit_control = 4;
           UART1_transmit_flag=YES;
+          STOP_wait_time = cticks_5ms;  //-动作结束之后还要保证唤醒相当一定时间,足够让继电器收回
        }
 
-       if((Judge_Time_In_MainLoop(STOP_wait_time,1000)==YES)) //-一次250mS  ,,80
+       if((Judge_Time_In_MainLoop(STOP_wait_time,1000)==YES) && (out_onoff_flag == 0)) //-一次250mS  ,,80
        {
          STOP_wait_time = cticks_5ms;
 
