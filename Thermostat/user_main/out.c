@@ -860,11 +860,15 @@ void xx_two_PaAUX_heal_judge(void)
             {
               if(OUT_HEAT_one_flag == 0xaa)
               {
-                out_status_new = OUT_Y1(1) | OUT_Y2(1) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);
-                out_hold_flag = 0xaa;
+                out_status_new = OUT_Y1(1) | OUT_Y2(1) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);  
+                out_hold_flag = 0xaa; //-0xaa表示达到了三级制热情况,这个一旦开启,必须到温度恢复常态才可以收回
               }
               else
+              {
                 out_status_new = OUT_Y1(1) | OUT_Y2(0) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);
+                out_hold_flag = 0xa5; //-增加一个中间态用于记录消息
+              }
+                            
             }
             else
             {
@@ -872,6 +876,8 @@ void xx_two_PaAUX_heal_judge(void)
               {
                 if(out_hold_flag == 0xaa)
                   out_status_new = OUT_Y1(1) | OUT_Y2(1) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);
+                else if(out_hold_flag == 0xa5) //-一旦辅热打开就需要一直开着,直到全部一起收回
+                  out_status_new = OUT_Y1(1) | OUT_Y2(0) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);
                 else
                 {
                   out_status_new = OUT_Y1(1) | OUT_Y2(1) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(0);
@@ -880,6 +886,11 @@ void xx_two_PaAUX_heal_judge(void)
               }
               else
               {
+                if(out_hold_flag == 0xaa) //-一旦辅热打开就需要一直开着,直到全部一起收回
+                  out_status_new = OUT_Y1(1) | OUT_Y2(1) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);
+                else if(out_hold_flag == 0xa5) //-一旦辅热打开就需要一直开着,直到全部一起收回
+                  out_status_new = OUT_Y1(1) | OUT_Y2(0) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);
+                else
                   out_status_new = OUT_Y1(1) | OUT_Y2(0) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(0);
               }
             }
@@ -888,6 +899,8 @@ void xx_two_PaAUX_heal_judge(void)
           {
             if(out_hold_flag == 0xaa)
               out_status_new = OUT_Y1(1) | OUT_Y2(1) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);
+            else if(out_hold_flag == 0xa5) //-一旦辅热打开就需要一直开着,直到全部一起收回
+              out_status_new = OUT_Y1(1) | OUT_Y2(0) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(1);
             else if(out_hold_flag == 0x55)
               out_status_new = OUT_Y1(1) | OUT_Y2(1) | OUT_OorB(0) | OUT_EorNOP(1) | OUT_W1orAUX(0);
             else
