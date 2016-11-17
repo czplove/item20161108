@@ -293,9 +293,9 @@ void sys_delay_judge(void)
        
        if(temp_data_out_flag == 0)
        {
-          if(Judge_Time_In_MainLoop(temp_data_out_time,10000)==YES)
+          if(Judge_STime_In_MainLoop(temp_data_out_time,60*5)==YES)
           {
-            temp_data_out_time = cticks_5ms;
+            temp_data_out_time = cticks_s;
             UART1_transmit_control = 6;
             UART1_transmit_flag=YES;
           }
@@ -304,7 +304,7 @@ void sys_delay_judge(void)
        {
           if(Judge_STime_In_MainLoop(temp_data_out_time,60*30)==YES)
           {
-              temp_data_out_time = cticks_5ms;
+              temp_data_out_time = cticks_s;
               temp_data_out_flag = 0;
               UART1_transmit_control = 6;
               UART1_transmit_flag=YES;
